@@ -70,6 +70,41 @@ public class Solution {
 }
 ```
 
+## 05. 替换空格
+
+**题目描述：** 请实现一个函数，将一个字符串中的每个空格替换成“%20”。例如，当字符串为 We Are Happy，则经过替换之后的字符串为 We%20Are%20Happy 。
+
+**知识点：** 字符串
+
+
+
+```java
+public class Solution {
+  public String replaceSpace(StringBuffer str) {
+        char[] chars = str.toString().toCharArray();
+        int blankCount = 0, originalLength = chars.length;
+        for (char c : chars) {
+            if (c == ' ')   blankCount++;
+        }
+        int newLength = originalLength + blankCount * 2;
+        char[] newChars = new char[newLength];
+        System.arraycopy(chars, 0, newChars, 0, originalLength);
+        int indexOfOriginal = originalLength - 1, indexOfNew = newLength - 1;
+        while (indexOfOriginal >= 0 && indexOfNew > indexOfOriginal) {
+            if (newChars[indexOfOriginal] == ' ') {
+                newChars[indexOfNew--] = '0';
+                newChars[indexOfNew--] = '2';
+                newChars[indexOfNew--] = '%';
+            } else {
+                newChars[indexOfNew--] = newChars[indexOfOriginal];
+            }
+            indexOfOriginal--;
+        }
+        return String.valueOf(newChars);
+    }
+}
+```
+
 
 
 ## 06. 从尾到头打印单链表
@@ -280,6 +315,69 @@ public class Solution {
 }
 ```
 
+### 10.1 跳台阶
+
+**题目描述：** 一只青蛙一次可以跳上1级台阶，也可以跳上2级。求该青蛙跳上一个n级的台阶总共有多少种跳法（先后次序不同算不同的结果）。
+
+```java
+public class Solution {
+   public int JumpFloor(int target) {
+        return Fibonacci(target);
+    }
+
+    private int Fibonacci(int n) {
+        if (n == 0) return 0;
+        if (n == 1) return 1;
+        if (n == 2) return 2;
+
+        int fibMinusOne = 2; // f(n - 1)
+        int fibMinusTwo = 1; // f(n - 2)
+        int fibN = 0;
+        for (int i = 3; i <= n; i++) {
+            fibN = fibMinusOne + fibMinusTwo;
+            fibMinusTwo = fibMinusOne;
+            fibMinusOne = fibN;
+        }
+        return fibN;
+    }
+}
+```
+
+### 10.2. 变态跳台阶
+
+**题目描述：** 一只青蛙一次可以跳上1级台阶，也可以跳上2级……它也可以跳上n级。求该青蛙跳上一个n级的台阶总共有多少种跳法。
+
+```java
+public class Solution {
+    public int JumpFloorII(int target) {
+        return (int) Math.pow(2, target - 1);
+    }
+}
+```
+
+### 10.3. 矩阵覆盖
+
+**题目描述：** 我们可以用 2\*1 的小矩形横着或者竖着去覆盖更大的矩形。请问用 n 个 2\*1 的小矩形无重叠地覆盖一个 2\*n 的大矩形，总共有多少种方法？
+
+```java
+public class Solution {
+    public int RectCover(int target) {
+        if (target == 0) return 0;
+        if (target == 1) return 1;
+        if (target == 2) return 2;
+        int fibMinusOne = 2; // f(n - 1)
+        int fibMinusTwo = 1; // f(n - 2)
+        int fibN = 0;
+        for (int i = 3; i <= target; i++) {
+            fibN = fibMinusOne + fibMinusTwo;
+            fibMinusTwo = fibMinusOne;
+            fibMinusOne = fibN;
+        }
+        return fibN;
+    }
+}
+```
+
 
 
 ## 11. 旋转数组中的最小数字
@@ -344,7 +442,7 @@ s f c s
 a d e e
 ```
 
-这样的3 X 4 矩阵中包含一条字符串"bcced"的路径，但是矩阵中不包含"abcb"路径，因为字符串的第一个字符b占据了矩阵中的第一行第二个格子之后，路径不能再次进入该格子。
+这样的 3 X 4 矩阵中包含一条字符串"bcced"的路径，但是矩阵中不包含"abcb"路径，因为字符串的第一个字符b占据了矩阵中的第一行第二个格子之后，路径不能再次进入该格子。
 
 **知识点：** 数组、回溯法
 
@@ -478,7 +576,7 @@ public int NumberOf1(int n) {
 }
 ```
 
-**方案2：** 把一个整数减去1，再和原整数做与运算，会把该整数最右边的1变成0，那个一个整数的二进制表示中有多少个1，就可以进行多少次这样的操作。
+**方案2：** 把一个整数减去 1，再和原整数做与运算，会把该整数最右边的 1 变成 0，那个一个整数的二进制表示中有多少个 1，就可以进行多少次这样的操作。
 
 ```java
 public int NumberOf1(int n) {
@@ -501,7 +599,7 @@ public int NumberOf1(int n) {
 
 **方案：** 结合公式
 
-​							$$a^n=\begin{cases}a^{n-1},\quad &n为偶数\\a^{(n1)/2}*a^{(n-1)/2}*a, &n为奇数 \\\end{cases}$$
+ 				![img](./assets/p_16.jpg)
 
 ```java
 public class Solution {
@@ -534,9 +632,35 @@ public class Solution {
 
 
 
+## 18. 删除链表的节点
+
+### 18.1 删除排序链表中的重复节点
+
+**题目描述：** 在一个排序的链表中，存在重复的结点，请删除该链表中重复的结点，重复的结点不保留，返回链表头指针。 例如，链表1->2->3->3->4->4->5 处理后为 1->2->5
+
+```java
+public class Solution {
+    public ListNode deleteDuplication(ListNode pHead) {
+        if (pHead == null || pHead.next == null)    return pHead;
+        ListNode next = pHead.next;
+        if (pHead.val == next.val) {
+            // 跳过重复元素
+            while (next != null && next.val == pHead.val) 
+                next = next.next;
+            return deleteDuplication(next);
+        } else {
+            pHead.next = deleteDuplication(pHead.next);
+            return pHead;
+        }
+    }
+}
+```
+
+
+
 ## 19. 正则表达式匹配
 
-**题目描述：** 请实现一个函数用来匹配包括'.'和'\*'的正则表达式。模式中的字符'.'表示任意一个字符，而**'\*'表示它前面的字符可以出现任意次（包含0次）**。 在本题中，匹配是指字符串的所有字符匹配整个模式。例如，字符串"aaa"与模式"a.a"和"ab*ac*a"匹配，但是与"aa.a"和"ab*a"均不匹配
+**题目描述：** 请实现一个函数用来匹配包括'.'和'\*'的正则表达式。模式中的字符'.'表示任意一个字符，而 **'\*'表示它前面的字符可以出现任意次（包含0次）** 。 在本题中，匹配是指字符串的所有字符匹配整个模式。例如，字符串"aaa"与模式"a.a"和"ab*ac*a"匹配，但是与"aa.a"和"ab*a"均不匹配
 
 **知识点：** 字符串
 
@@ -590,11 +714,7 @@ public class Solution {
 
 ## 20. 表示数值的字符串
 
-请实现一个函数用来判断字符串是否表示数值（包括整数和小数）。例如，字符串"+100","5e2","-123","3.1416"和"-1E-16"都表示数值。 但是"12e","1a3.14","1.2.3","+-5"和"12e+4.3"都不是。
-
-```java
-
-```
+**题目描述：** 请实现一个函数用来判断字符串是否表示数值（包括整数和小数）。例如，字符串"+100","5e2","-123","3.1416"和"-1E-16"都表示数值。 但是"12e","1a3.14","1.2.3","+-5"和"12e+4.3"都不是。
 
 
 
@@ -781,12 +901,12 @@ public ListNode ReverseList(ListNode head) {
 **方案：** 当我们得到两个链表中较小的头结点并把它链接到已经合并的链表之后，两个链表剩余的结点依然是有序的，因此合并的步骤和之前的步骤是一样的，因此可以使用递归。
 
 ```
-1->3->5->7					3->5->7							3->5->7
-|							|								|
-p1					1->		p1						1->2	p1
-2->4->6->8					2->4->6->8						4->6->8
-|							|								|
-p2							p2								p2
+1->3->5->7					3->5->7						3->5->7
+|							|							|
+p1					1->		p1					1->2	p1
+2->4->6->8					2->4->6->8					4->6->8
+|							|							|
+p2							p2							p2
 ```
 
 ```java
@@ -1023,6 +1143,43 @@ public class Solution {
     }
 }
 ```
+
+### 32.1 按之字形顺序打印二叉树
+
+**题目描述：** 请实现一个函数按照之字形打印二叉树，即第一行按照从左到右的顺序打印，第二层按照从右至左的顺序打印，第三行按照从左到右的顺序打印，其他行以此类推。
+
+**知识点：** 栈、树
+
+```java
+public class Solution {
+    public ArrayList<ArrayList<Integer> > Print(TreeNode pRoot) {
+        ArrayList<ArrayList<Integer>> ret = new ArrayList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(pRoot);
+        boolean reverse = false;
+        while (!queue.isEmpty()) {
+            ArrayList<Integer> list = new ArrayList<>();
+            int cnt = queue.size();
+            while (cnt-- > 0) {
+                TreeNode node = queue.poll();
+                if (node == null)
+                    continue;
+                list.add(node.val);
+                queue.add(node.left);
+                queue.add(node.right);
+            }
+            if (reverse)
+                Collections.reverse(list);
+            reverse = !reverse;
+            if (list.size() != 0)
+                ret.add(list);
+        }
+        return ret;
+    }
+}
+```
+
+
 
 
 
