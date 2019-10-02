@@ -292,7 +292,7 @@ public class Solution {
 
 **分析：** 斐波那契数列的递推公式如下所示，很自然会想到直接根据公式分情况讨论即可，但第三条公式是从上往下递推的，它包含了很多重复的步骤。
 
-​                                                           ![img](./assets/Fibonacci.jpg)
+<div align="center"> <img src="/assets/Fibonacci.jpg" width="500px"> </div><br>
 
 **方案：** 使用从下往上计算，首先根据 f(0) 和 f(1) 算出 f(2)，再根据 f(1) 和 f(2) 算出 f(3)，以此类推就可以算出第 n 项了。
 
@@ -599,7 +599,7 @@ public int NumberOf1(int n) {
 
 **方案：** 结合公式
 
- 				![img](./assets/p_16.jpg)
+<div align="center"> <img src="/assets/p_16.jpg" width="500px"> </div><br>
 
 ```java
 public class Solution {
